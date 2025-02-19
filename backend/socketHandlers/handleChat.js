@@ -4,6 +4,7 @@ import { chat } from "../services/groq/chat.js";
 export function handleChat(socket) {
   // Listen for new messages
   socket.on(chatEvents.USER_MESSAGE, async ({model = "llama-3.3-70b-versatile", messages=[]}) => {
+    console.log({model, messages})
     try {
         const AIResponse = await chat({model, messages});
         

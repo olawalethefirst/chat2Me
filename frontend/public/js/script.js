@@ -1,4 +1,10 @@
-//Todo: Write tests for all parts of APP. Both the FE and BE
+// Todos:
+//1: Write tests for all parts of APP. Both the FE and BE
+//2: Separate script.js fns to utility fns directory to separate concerns.
+  // keep event handlers in a common directory
+  // Keep socket handlers in common directory 
+// 3. keep interaction between varying utility fns here
+
 import { errorMessages, chatEvents } from '../../../constants.js';
 
 // APIS 
@@ -21,12 +27,12 @@ recognition.interimResults = true;
 // utilities
 // const handleListening = recognition.start
 const handleListening = () => {
-
-  
   if (recognition) {
     alert("I hear you")
     recognition.start()
   }
+
+  
 }
 const handleStopListening = (e) => {
   let last = e.results.length - 1;
@@ -35,17 +41,18 @@ const handleStopListening = (e) => {
   if (lastRecognition.isFinal) {
     let text = lastRecognition[0].transcript;
     console.log("done", {text})
-    socket.emit(chatEvents.USER_MESSAGE, text);
+  
   } else {
     console.log('Processing...', lastRecognition);
-  }
-
-  
+  } 
 }
 
+const emitServerMessage = () => {
+  socket.emit(chatEvents.USER_MESSAGE, {model: "llama-3.1-8b-instant", messages: ["who am I to you?"]});
+}
 
 // Event handlers
-document.querySelector('button').addEventListener('click', handleListening);
+document.querySelector('button').addEventListener('click', emitServerMessage);
 recognition.addEventListener('result', handleStopListening);
 
 
