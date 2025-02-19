@@ -6,7 +6,7 @@ export const errorMessages = {
 };
 
 export const chatEvents = {
-    ERROR: "error",
+    CHAT_ERROR: "chat_error",
     USER_MESSAGE: "user_message",
     AI_MESSAGE: "ai_message"
 }

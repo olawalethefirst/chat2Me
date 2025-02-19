@@ -1,6 +1,6 @@
 import groq from "./instance.js";
 
-export async function chat({model = "llama-3.3-70b-versatile", messages=[]}) {
+export default async function chat({model = "llama-3.3-70b-versatile", messages=[]}) {
   const completion = await groq.chat.completions
     .create({
       messages: messages.map(message => (

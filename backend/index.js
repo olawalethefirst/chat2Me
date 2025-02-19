@@ -1,14 +1,14 @@
 import dotenv from "dotenv";
-// setup .env variables access
-dotenv.config();
-
 import express from "express";
 import { fileURLToPath } from "url";
 import path from "path";
-import { Server } from "socket.io";
 import { errorMessages } from "../constants.js";
-import { handleChat } from "./socketHandlers/handleChat.js";
+import websocketHandler from "./socketHandlers/index.js";
 import modelsRouter from "./routes/models.js";
+
+
+// setup .env variables access
+dotenv.config();
 
 // creates new express server
 const app = express();
@@ -35,14 +35,5 @@ const server = app.listen(process.env.PORT, () => {
   console.log(`starting application on: `, process.env.PORT)
 });
 
-// WEBSOCKET
-// creates new socket.io server
-const io = new Server(server);
-// handle events
-io.on('connection', function(socket) {
-  handleChat(socket);
-
-   socket.on('disconnect', () => {
-    console.log('Socket disconnected');
-  });
-});
+// setup websocket
+websocketHandler(server)
