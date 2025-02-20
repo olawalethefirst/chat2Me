@@ -1,6 +1,6 @@
 
 import { Server } from "socket.io";
-import handleChat  from "./handleChat.js";
+import { handleChat }  from "./handleChat.js";
 import { chatEvents } from "../../constants.js";
 
 export default function websocketHandler (server) {

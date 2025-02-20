@@ -28,7 +28,7 @@ app.use(express.static(__root_dirname + '/frontend/public'))
 app.use('/constants.js', express.static(__root_dirname + '/constants.js'))
 app.use("/api", modelsRouter)
 
-const server = app.listen(process.env.PORT, () => {
+export const server = app.listen(process.env.PORT, () => {
   if (!process.env.GROQ_API_KEY) {
     console.error(errorMessages.GROQ_API_KEY_REQUIRED)
   }
