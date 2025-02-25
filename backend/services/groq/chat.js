@@ -12,7 +12,5 @@ export async function chat({model = "llama-3.3-70b-versatile", messages=[]}) {
       model,
     })
 
-    console.log({completion: JSON.stringify(completion)})
-
     return completion.choices[0].message.content
 }

@@ -11,7 +11,7 @@ import modelsRouter from "./routes/models.js";
 dotenv.config();
 
 // creates new express server
-const app = express();
+export const app = express();
 
 // Get __filename equivalent
 const __filename = fileURLToPath(import.meta.url);
@@ -28,12 +28,22 @@ app.use(express.static(__root_dirname + '/frontend/public'))
 app.use('/constants.js', express.static(__root_dirname + '/constants.js'))
 app.use("/api", modelsRouter)
 
-export const server = app.listen(process.env.PORT, () => {
-  if (!process.env.GROQ_API_KEY) {
-    console.error(errorMessages.GROQ_API_KEY_REQUIRED)
-  }
-  console.log(`starting application on: `, process.env.PORT)
-});
+export function startServer() {
+  const server = app.listen(process.env.PORT, () => {
+    if (!process.env.GROQ_API_KEY) {
+      console.error(errorMessages.GROQ_API_KEY_REQUIRED);
+    }
 
-// setup websocket
-websocketHandler(server)
+    console.log(`starting application on: `, process.env.PORT)
+  });
+
+  // Setup WebSocket
+  websocketHandler(server);
+
+  return server;
+}
+
+// Start the server only if this file is run directly
+if (import.meta.url === `file://${process.argv[1]}`) {
+  startServer();
+}
