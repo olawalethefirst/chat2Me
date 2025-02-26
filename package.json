@@ -5,6 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "start": "nodemon backend/index.js",
     "test": "GROQ_API_KEY=123 node --experimental-vm-modules node_modules/jest/bin/jest.js"
   },
   "author": "olawalethefirst",

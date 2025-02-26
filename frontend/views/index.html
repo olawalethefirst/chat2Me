@@ -1,15 +1,41 @@
 <html lang="en">
     <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>chat2Me</title>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.8.1/socket.io.js" integrity="sha512-8BHxHDLsOHx+flIrQ0DrZcea7MkHqRU5GbTHmbdzMRnAaoCIkZ97PqZcXJkKZckMMhqfoeaJE+DNUVuyoQsO3Q==" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
-        <script type="module" src="/js/script.js" defer></script>
+        <script type="module" src="../public/js/script.js" defer></script>
+        <link rel="stylesheet" href="./index.css">
     </head>
     <body>
         <div class="container">
-            <div id="messages">
+            <!-- <div id="messages">
             </div>
     
             <button class="talk">Talk</button>
-            <input value="" placeholder="type message" />
+            <input value="" placeholder="type message" /> -->
+            
+
+            <!-- Layout -->
+            <div class="layout">
+                <!-- sidebar -->
+                <section class="sidebar">
+                    <button class="new-chat-button">
+                        New chat
+                    </button>
+
+                    <select>
+                        <option>
+
+                        </option>
+                    </select>
+                </section>
+    
+                <!-- main content -->
+                <section class="content">
+    
+                </section>
+            </div>
         </div>
     </body>
 
