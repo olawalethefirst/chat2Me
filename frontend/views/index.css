@@ -20,7 +20,8 @@
 }
 
 body {
-    background: #000;
+    background: var(--primary-color);
+    color: var(--secondary-color)
 }
 
 .content, .sidebar {
@@ -45,6 +46,8 @@ body {
 
 .sidebar {
     border-right: var(--border-default);
+    display: flex;
+    flex-direction: column;
 }
 @media screen and (max-width: 616px) {
     .sidebar {
@@ -61,4 +64,70 @@ body {
     border-radius: var(--button-border-radius);
     border: 1px solid var(---accent);
     font-weight: 500;
+    font-size: 16px;;
+}
+@media screen and (max-width: 616px) {
+    .new-chat-button {
+        font-size: 16px;
+    }
+}
+
+.select-models {
+    margin: auto auto 40px;
+    align-self: center;
+    border-radius: var(--button-border-radius);
+    border: 1px solid var(--secondary-color);
+    padding: 8px 20px;
+    width: 100px;
+    /* removes default unstylable arrow */
+    appearance: none;
+    -webkit-appearance: none;
+    position: relative;
+    outline: var(---accent);
+    box-shadow: 2px 2px 8px var(---accent);
+    color: var(--primary-color);
+}
+
+.chat-area {
+    max-width: 780px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 0 16px;
+}
+
+.chats  {
+
+}
+.initaiate-chat {
+    margin: auto 0 20px;
+    border: 1px solid var(---accent);
+    border-radius: 20px;
+    padding: 12px;
+    background-color: rgba(255,255,255,.95);
+    background-color: rgba(0,0,0,.1);
+    box-shadow: 2px 2px 8px var(---accent);
+}
+
+.chat-input {
+    width: 100%;
+    background-color: transparent;
+    border:none;
+    outline: none;
+    color: var(--secondary-color);
+    resize: none;
+    height: auto;
+    max-height: 150px;
+    font-size: 16px;
+}
+@media screen and (max-width: 616px) {
+    .chat-input {
+        font-size: 12.5px;
+    }
+}
+
+.chat-actions {
+    display: flex;
+    justify-content: space-between;
 }
