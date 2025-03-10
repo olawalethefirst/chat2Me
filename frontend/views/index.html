@@ -10,7 +10,7 @@
       referrerpolicy="no-referrer"
       defer
     ></script>
-    <script type="module" src="../public/js/script.js" defer></script>
+    <script type="module" src="../js/script.js" defer></script>
     <link rel="stylesheet" href="./index.css" />
   </head>
   <body>
@@ -41,7 +41,7 @@
         <!-- main content -->
         <section class="content">
           <div class="chat-area">
-            <div class="chats"></div>
+            <div class="chats" id="chats"></div>
 
             <div class="initaiate-chat">
               <textarea
@@ -50,11 +50,11 @@
               ></textarea>
 
               <div class="chat-actions">
-                <button class="">
+                <button class="chat-action">
                   <image src="/images/svgs/record.svg"> </image>
                 </button>
 
-                <button class="">
+                <button class="chat-action">
                   <image src="/images/svgs/send-icons.svg"> </image>
                 </button>
               </div>

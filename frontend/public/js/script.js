@@ -6,6 +6,7 @@
 // 3. keep interaction between varying utility fns here
 
 import { errorMessages, chatEvents } from '../../../constants.js';
+import { appendMessages } from "./utils/modifyUI.js";
 
 // APIS 
 // ------------------------
@@ -54,6 +55,36 @@ const emitServerMessage = () => {
 // Event handlers
 document.querySelector('button').addEventListener('click', emitServerMessage);
 recognition.addEventListener('result', handleStopListening);
+
+
+
+appendMessages([
+    { type: "user", message: "Hello!" },
+    { type: "ai", message: "Hello!" },
+    { type: "user", message: "How are you?" },
+    { type: "ai", message: "I'm an AI, but I'm here to help!" },
+    { type: "user", message: "How are you?" },
+    { type: "ai", message: "I'm an AI, but I'm here to help!" },
+    { type: "user", message: "How are you?" },
+    { type: "ai", message: "I'm an AI, but I'm here to help!" },
+    { type: "user", message: "How are you?" },
+    { type: "ai", message: "I'm an AI, but I'm here to help!" },
+    { type: "user", message: "How are you?" },
+    { type: "ai", message: "I'm an AI, but I'm here to help!" },
+    { type: "user", message: "How are you?" },
+    { type: "ai", message: "I'm an AI, but I'm here to help!" },
+    { type: "user", message: "How are you?" },
+    { type: "ai", message: "I'm an AI, but I'm here to help!" },
+    { type: "user", message: "How are you?" },
+    { type: "ai", message: "I'm an AI, but I'm here to help!" },
+    { type: "user", message: "How are you?" },
+    { type: "ai", message: "I'm an AI, but I'm here to help!" },
+    { type: "user", message: "How are you?" },
+    { type: "ai", message: "I'm an AI, but I'm here to help!" },
+    { type: "user", message: "How are you?" },
+    { type: "ai", message: "I'm an AI, but I'm here to help!" },
+]);
+
 
 
 // Note Limited availability for audio, show tool tip error for non supported browsers

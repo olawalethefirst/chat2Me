@@ -19,6 +19,14 @@
     font-family: sans-serif;
 }
 
+button, select {
+    cursor: pointer;
+}
+
+button:hover {
+    transform: scale(1.1);
+} 
+
 body {
     background: var(--primary-color);
     color: var(--secondary-color)
@@ -95,11 +103,29 @@ body {
     flex-direction: column;
     height: 100%;
     padding: 0 16px;
+    gap: 20px;
 }
 
 .chats  {
-
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    overflow: auto;
 }
+.chat {
+    border-radius: 1.5rem;
+    padding: 16px;
+}
+.user-chat{
+    max-width: 80%;
+    margin-left:auto;
+    background: #242626;
+}
+.ai-chat{
+    margin-right:auto
+}
+
 .initaiate-chat {
     margin: auto 0 20px;
     border: 1px solid var(---accent);
@@ -131,3 +157,12 @@ body {
     display: flex;
     justify-content: space-between;
 }
+
+.chat-action {
+    background: transparent;
+    outline: none;
+    border: none;
+    padding: 12px; 
+    cursor: pointer;
+}
+
