@@ -1,17 +1,7 @@
-// Todos:
-//1: Write tests for all parts of APP. Both the FE and BE
-//2: Separate script.js fns to utility fns directory to separate concerns.
-  // keep event handlers in a common directory
-  // Keep socket handlers in common directory 
-// 3. keep interaction between varying utility fns here
-
 import { errorMessages, chatEvents } from '../../../constants.js';
 import { appendMessages, appendModels } from "./utils/modifyUI.js";
 import { fetchAndAppendModels } from "./utils/models.js";
-import { startListening, stopListening } from "./utils/voice-recognition.js";
 
-// APIS 
-// ------------------------
 // Socket IO 
 const socket = io();
 // ------------------------
@@ -55,8 +45,7 @@ const emitServerMessage = () => {
 }
 
 // Event handlers
-const isListening = false
-document.getElementById('record-voice').addEventListener('click', isListening ? stopListening : startListening);
+document.querySelector('button').addEventListener('click', emitServerMessage);
 recognition.addEventListener('result', handleStopListening);
 
 

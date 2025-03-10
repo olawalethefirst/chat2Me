@@ -33,8 +33,6 @@
             class="select-models"
             aria-placeholder=""
           >
-            <option>chatGPT</option>
-            <option>Llamaasasdsadsasdsas</option>
           </select>
         </section>
 
@@ -50,8 +48,11 @@
               ></textarea>
 
               <div class="chat-actions">
-                <button class="chat-action">
-                  <image src="/images/svgs/record.svg"> </image>
+                <button class="chat-action" id="record-voice">
+                   <div id="stop-record" class="outer-circle hide">
+                      <div class="inner-circle"></div>
+                  </div>
+                  <image id="record" src="/images/svgs/record.svg"> </image>
                 </button>
 
                 <button class="chat-action">
