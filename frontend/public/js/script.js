@@ -54,10 +54,6 @@ const emitServerMessage = () => {
   socket.emit(chatEvents.USER_MESSAGE, {model: "llama-3.1-8b-instant", messages: ["who am I to you?"]});
 }
 
-// Event handlers
-const isListening = false
-document.getElementById('record-voice').addEventListener('click', isListening ? stopListening : startListening);
-recognition.addEventListener('result', handleStopListening);
 
 
 //  append new Messages
@@ -95,4 +91,27 @@ appendMessages([
 
 
 // Event Listeners
+const createRecordhandler = () => {
+  let isListening = false
+
+  return () => {
+    
+    if (!isListening) {
+      isListening = true;
+      startListening((recognizedText) => { 
+        isListening = false;
+        console.log({recognizedText})
+      })
+    } else {
+      isListening = false;
+      stopListening()
+    }
+  }
+}
+const recordHandler = createRecordhandler()
+
+
+// Event handlers
 document.addEventListener("DOMContentLoaded", fetchAndAppendModels);
+document.getElementById('record-voice').addEventListener('click', recordHandler);
+recognition.addEventListener('result', handleStopListening);

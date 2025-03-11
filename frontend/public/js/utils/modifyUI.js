@@ -33,7 +33,7 @@ export function toggleRecorder(isRecording) {
   const recordElement = document.getElementById("record");
   const stopRecordElement = document.getElementById("stop-record");
 
-  if (!recordBtn || !stopRecordBtn) return;
+  if (!recordElement || !stopRecordElement) return;
 
   if (isRecording) {
     recordElement.classList.add("hide");
