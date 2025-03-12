@@ -2,12 +2,11 @@ import { errorMessages } from "../../../../constants.js";
 import { toggleRecorder } from "./modifyUI.js";
 
 
-let recognizedTexts = [];
 let isListening = false;
 let recognition;
 let recognitionError = false; 
 
-export const startListening = (callback) => {
+export const startListening = ({ onMessage, onEnd }) => {
     
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) {
@@ -29,7 +28,7 @@ export const startListening = (callback) => {
         if (lastRecognition.isFinal) {
             let text = lastRecognition[0].transcript;
             console.info("new recording part", {text})
-            recognizedTexts.push(text)
+            onMessage(text)
         } 
     };
 
@@ -43,8 +42,7 @@ export const startListening = (callback) => {
             recognition.start(); // Restart if still listening
         } else {
             toggleRecorder(false)
-            callback(recognizedTexts.join('. '));
-            recognizedTexts = [];
+            onEnd();
             isListening = false;
             recognitionError = false; 
         }

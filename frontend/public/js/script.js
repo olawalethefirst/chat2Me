@@ -6,37 +6,12 @@
 // 3. keep interaction between varying utility fns here
 
 import { errorMessages, chatEvents } from '../../../constants.js';
-import { appendMessages, appendModels } from "./utils/modifyUI.js";
+import { appendMessages, appendModels, updateChatInput } from "./utils/modifyUI.js";
 import { fetchAndAppendModels } from "./utils/models.js";
 import { startListening, stopListening } from "./utils/voice-recognition.js";
-
-// APIS 
-// ------------------------
-// Socket IO 
-const socket = io();
-// ------------------------
-// Speech Recognition
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-if (!SpeechRecognition) {
-    // Todo: track support for speechToText api and for textToSpeech too. 
-    // If either is unavailable, disable button on UI, and show tooltip message upon hover 
-    throw error(errorMessages.NO_SPEECH_RECOGNITION);
-}
-const recognition = new SpeechRecognition();
-recognition.lang = 'en-US';
-recognition.interimResults = true;
+import { registerServerMessageHandler, emitServerMessage } from "./utils/chat.js";
 
 
-// utilities
-// const handleListening = recognition.start
-const handleListening = () => {
-  if (recognition) {
-    alert("I hear you")
-    recognition.start()
-  }
-
-  
-}
 const handleStopListening = (e) => {
   let last = e.results.length - 1;
   let lastRecognition = e.results[last];
@@ -50,9 +25,7 @@ const handleStopListening = (e) => {
   } 
 }
 
-const emitServerMessage = () => {
-  socket.emit(chatEvents.USER_MESSAGE, {model: "llama-3.1-8b-instant", messages: ["who am I to you?"]});
-}
+
 
 
 
@@ -90,7 +63,9 @@ appendMessages([
 
 
 
-// Event Listeners
+registerServerMessageHandler(console.log)
+
+ 
 const createRecordhandler = () => {
   let isListening = false
 
@@ -98,9 +73,13 @@ const createRecordhandler = () => {
     
     if (!isListening) {
       isListening = true;
-      startListening((recognizedText) => { 
-        isListening = false;
-        console.log({recognizedText})
+      startListening({
+        onMessage: (recognizedText) => { 
+          updateChatInput(recognizedText);
+        },
+        onEnd: (recognizedText) => { 
+          isListening = false;
+        }
       })
     } else {
       isListening = false;
@@ -113,5 +92,21 @@ const recordHandler = createRecordhandler()
 
 // Event handlers
 document.addEventListener("DOMContentLoaded", fetchAndAppendModels);
-document.getElementById('record-voice').addEventListener('click', recordHandler);
-recognition.addEventListener('result', handleStopListening);
+document.getElementById('recordVoice').addEventListener('click', recordHandler);
+document.getElementById('sendMessage').addEventListener('click',
+  () => {
+    console.log("Clicking me")
+    emitServerMessage({
+        modelID: "llama-3.1-8b-instant",
+        messages: [{
+          "role": "system",
+          "content": "you are a helpful assistant."
+        },
+        {
+            "role": "user",
+            "content": "Explain the importance of fast language models",
+        }]}, 
+    )
+  });
+
+

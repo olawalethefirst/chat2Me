@@ -5,8 +5,8 @@ export async function chat({model = "llama-3.3-70b-versatile", messages=[]}) {
     .create({
       messages: messages.map(message => (
         {
-          role: "user",
-          content: message,
+          role: message.role,
+          content: message.content,
         }
       )),
       model,

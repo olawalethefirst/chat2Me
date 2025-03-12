@@ -31,7 +31,7 @@ export function appendModels(models) {
 
 export function toggleRecorder(isRecording) {
   const recordElement = document.getElementById("record");
-  const stopRecordElement = document.getElementById("stop-record");
+  const stopRecordElement = document.getElementById("stopRecord");
 
   if (!recordElement || !stopRecordElement) return;
 
@@ -42,4 +42,20 @@ export function toggleRecorder(isRecording) {
     recordElement.classList.remove("hide");
     stopRecordElement.classList.add("hide");
   }
+}
+
+
+
+export function updateChatInput(message, clearExisting = false) {
+  const chatInput = document.getElementById("chatInput");
+
+  if (!chatInput ) return;
+
+  if (clearExisting) {
+    chatInput.value = message;
+  } else {
+    chatInput.value += message;
+  }
+
+  chatInput.focus(); 
 }

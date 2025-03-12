@@ -43,19 +43,20 @@
 
             <div class="initaiate-chat">
               <textarea
+                id="chatInput"
                 class="chat-input"
                 placeholder="Type a message..."
               ></textarea>
 
               <div class="chat-actions">
-                <button class="chat-action" id="record-voice">
-                   <div id="stop-record" class="outer-circle hide">
+                <button class="chat-action" id="recordVoice">
+                   <div id="stopRecord" class="outer-circle hide">
                       <div class="inner-circle"></div>
                   </div>
                   <image id="record" src="/images/svgs/record.svg"> </image>
                 </button>
 
-                <button class="chat-action">
+                <button class="chat-action" id="sendMessage">
                   <image src="/images/svgs/send-icons.svg"> </image>
                 </button>
               </div>
