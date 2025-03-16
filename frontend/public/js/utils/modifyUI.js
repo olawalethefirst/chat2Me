@@ -1,39 +1,55 @@
-export function appendMessages(messages) {
-    const chatContainer = document.getElementById("chats");
-    if (!chatContainer) {
-        console.error("Chat container not found");
-        return;
-    }
-    
-      messages.forEach(({ type, message }) => {
-        const messageDiv = document.createElement("div");
-        messageDiv.className = `chat ${type}-chat`;
-        messageDiv.textContent = message;
-        chatContainer.appendChild(messageDiv);
-    });
+import { elementIDs } from "../../../../constants.js";
+
+export function renderMessages(messages) {
+  const chatContainer = document.getElementById(elementIDs.chats);
+  
+  if (!chatContainer) {
+      throw new Error('Chat container not found');
+  }
+
+  const fragment = document.createDocumentFragment()
+
+  messages.forEach(({ type, message }) => {
+    const messageDiv = document.createElement("div");
+    messageDiv.className = `chat ${type}-chat`;
+    messageDiv.textContent = message;
+    fragment.appendChild(messageDiv);
+  });
+
+  chatContainer.appendChild(fragment);
+  // scroll to bottom 
+  chatContainer.scrollTo({
+    top: chatContainer.scrollHeight,
+    behavior: 'smooth'
+  });
 }
 
-export function appendModels(models) {
-    const modelsSelect = document.getElementById("models");
-
-    if (!modelsSelect) {
-        console.error("Models select element not found");
-        return;
-    }
-    
-    models.forEach(({ label, value }) => {
-        const option = document.createElement("option");
-        option.value = value;
-        option.textContent = label;
-        modelsSelect.appendChild(option);
-    });
+export function renderModels(models) {
+  const modelsSelect = document.getElementById(elementIDs.models);
+  
+  if (!modelsSelect) {
+    throw new Error("Models select element not found");
+  }
+  
+  const fragment = document.createDocumentFragment()
+  
+  models.forEach(({ label, value }) => {
+    const option = document.createElement("option");
+    option.value = value;
+    option.textContent = label;
+    fragment.appendChild(option);
+  });
+  
+  modelsSelect.appendChild(fragment);
 }
 
-export function toggleRecorder(isRecording) {
-  const recordElement = document.getElementById("record");
-  const stopRecordElement = document.getElementById("stopRecord");
+export function renderRecorder(isRecording) {
+  const recordElement = document.getElementById(elementIDs.record);
+  const stopRecordElement = document.getElementById(elementIDs.stopRecord);
 
-  if (!recordElement || !stopRecordElement) return;
+  if (!recordElement || !stopRecordElement) {
+    throw new Error ('recordElement or stopRecordElement not found')
+  };
 
   if (isRecording) {
     recordElement.classList.add("hide");
@@ -46,10 +62,10 @@ export function toggleRecorder(isRecording) {
 
 
 
-export function updateChatInput(message, clearExisting = false) {
-  const chatInput = document.getElementById("chatInput");
+export function renderChatInput(message, clearExisting = false) {
+  const chatInput = document.getElementById(elementIDs.chatInput);
 
-  if (!chatInput ) return;
+  if (!chatInput ) throw new Error ('Chat Input not found!');
 
   if (clearExisting) {
     chatInput.value = message;

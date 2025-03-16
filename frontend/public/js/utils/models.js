@@ -1,9 +1,7 @@
-import { appendModels } from "./modifyUI.js";
-
-export async function fetchAndAppendModels() {
+export async function fetchModels() {
   try {
     const response = await fetch("/api/models"); 
-      if (!response.ok) throw new Error("Failed to fetch models");
+    if (!response.ok) throw new Error("Failed to fetch models");
       
     const responseJSON = await response.json();
 
@@ -12,9 +10,10 @@ export async function fetchAndAppendModels() {
         value: id
     }))
     
-    appendModels(modelOptions); 
+    return modelOptions; 
   } catch (error) {
-      console.error("Error fetching models:", error);
-      // Todo: show toast message if this fails
+    console.error("Error fetching models:", error);
+
+    throw error.message 
   }
 }

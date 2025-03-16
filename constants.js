@@ -10,3 +10,13 @@ export const chatEvents = {
     USER_MESSAGE: "user_message",
     AI_MESSAGE: "ai_message"
 }
+
+export const elementIDs = {
+    chats: 'chats',
+    models: 'models',
+    chatInput: 'chatInput',
+    record: 'record',
+    stopRecord: 'stopRecord',
+    toggleRecord: "toggleRecord",
+    sendMessage: "sendMessage"
+}
