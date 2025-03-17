@@ -1,7 +1,7 @@
 // Todos:
 //1: Write tests for all parts of APP. Both the FE and BE
 import { errorMessages, chatEvents, elementIDs } from '../../../constants.js';
-import {  renderModels, } from "./utils/modifyUI.js";
+import {  renderModels, renderScrollableChatInput, renderChatInputValue, renderRecorder } from "./utils/modifyUI.js";
 import { fetchModels } from "./utils/models.js";
 import { Recordhandler,  } from "./utils/voice-recognition.js";
 import { registerAIMessagesHandler, emitUserMessage, closeChatSocket, setupChatSocket } from "./utils/chat.js";
@@ -23,13 +23,17 @@ const appState = {
 
 
 const {startListening, stopListening} = new Recordhandler()
- 
+
+// models
+const updateSelectedModel = (value) => {
+  appState.models.currentModel = value;
+}
 const setupModelOptions = async () => {
   try {
     appState.models.isLoading = true
     const models = await fetchModels();
     renderModels(models)
-    appState.models.currentModel = models[0].value
+    updateSelectedModel(models[0].value)
   } catch(error) {
     appState.models.error = error
     // todo: show toast error loading models
@@ -38,18 +42,66 @@ const setupModelOptions = async () => {
   }
 }
 
+// handle recording 
+const updateIsRecording = () => {
+  appState.messages.isRecording = !appState.messages.isRecording;
+}
+const toggleIsRecording = () => {
+  updateIsRecording();
+  renderRecorder(appState.messages.isRecording);
+}
+const initiateRecord = () => {
+  startListening({
+    onStart: () => {
+      console.log('starting')
+    },
+    onFragment: (fragment) => {
+      renderChatInputValue(fragment, false)
+    },
+    onEnd: () => {
+      // toggleIsRecording()
+    },
+    onError: () => {
+      //todo: show toast message
+    }
+  })
+}
+const handleToggleRecord = () => {
+  console.log(appState.messages.isRecording)
+  try {
+    if (appState.messages.isRecording) {
+      stopListening()
+    } else {
+      initiateRecord();
+    }
+  } catch {
+    // todo: show toast or silently ignore
+  }
+  
+  toggleIsRecording()
+}
+
 // Event handlers
 document.addEventListener("DOMContentLoaded", () => {
   // setup chat socket 
-  setupChatSocket()
-  registerAIMessagesHandler(console.log)
+  setupChatSocket();
+  registerAIMessagesHandler(console.log);
 
-  // setup model dropdown options
+  // setup model dropdown 
   setupModelOptions()
+  document.getElementById(elementIDs.models).addEventListener('change', (e) => {
+    updateSelectedModel(e.target.value)
+  });
 
-  document.getElementById(elementIDs.toggleRecord).addEventListener('click', () => {});
+  
+  // chat input events
+  document.getElementById(elementIDs.chatInput).addEventListener('input', (e) => {
+    renderScrollableChatInput(e.target)
+  });
+
+  // handle record updates
+  document.getElementById(elementIDs.toggleRecord).addEventListener('click', handleToggleRecord);
   document.getElementById(elementIDs.sendMessage).addEventListener('click', () => {});
-  document.getElementById(elementIDs.models).addEventListener('change', console.log);
 });
 
 // Cleanup

@@ -60,9 +60,7 @@ export function renderRecorder(isRecording) {
   }
 }
 
-
-
-export function renderChatInput(message, clearExisting = false) {
+export function renderChatInputValue(message, clearExisting = false) {
   const chatInput = document.getElementById(elementIDs.chatInput);
 
   if (!chatInput ) throw new Error ('Chat Input not found!');
@@ -74,4 +72,11 @@ export function renderChatInput(message, clearExisting = false) {
   }
 
   chatInput.focus(); 
+}
+
+export function renderScrollableChatInput(chatInput, ) {
+  if (!chatInput || !chatInput.style) throw new Error ('Chat Input not specified!');
+
+  chatInput.style.height = 'auto';
+  chatInput.style.height = Math.min(chatInput.scrollHeight, 120) + 'px';
 }
