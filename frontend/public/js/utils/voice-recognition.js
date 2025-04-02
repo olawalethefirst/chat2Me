@@ -49,7 +49,6 @@ export class Recordhandler {
     }
 
     stopListening = () => {
-        console.log('stopping')
         if (this.recognition && this.isListening) {
             this.recognition.stop(); // Now accessible
             this.isListening = false;
