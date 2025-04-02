@@ -9,14 +9,14 @@ export function renderMessages(messages) {
 
   const fragment = document.createDocumentFragment()
 
-  messages.forEach(({ type, message }) => {
+  messages.forEach(({ role, content }) => {
     const messageDiv = document.createElement("div");
-    messageDiv.className = `chat ${type}-chat`;
-    messageDiv.textContent = message;
+    messageDiv.className = `chat ${role}-chat`;
+    messageDiv.textContent = content;
     fragment.appendChild(messageDiv);
   });
 
-  chatContainer.appendChild(fragment);
+  chatContainer.replaceChildren(fragment);
   // scroll to bottom 
   chatContainer.scrollTo({
     top: chatContainer.scrollHeight,
@@ -40,7 +40,7 @@ export function renderModels(models) {
     fragment.appendChild(option);
   });
   
-  modelsSelect.appendChild(fragment);
+  modelsSelect.replaceChildren(fragment);
 }
 
 export function renderRecorder(isRecording) {
@@ -60,23 +60,20 @@ export function renderRecorder(isRecording) {
   }
 }
 
-export function renderChatInputValue(message, clearExisting = false) {
-  const chatInput = document.getElementById(elementIDs.chatInput);
-
-  if (!chatInput ) throw new Error ('Chat Input not found!');
-
-  if (clearExisting) {
-    chatInput.value = message;
-  } else {
-    chatInput.value += message;
-  }
-
-  chatInput.focus(); 
-}
-
-export function renderScrollableChatInput(chatInput, ) {
+export function renderScrollableChatInput(chatInput) {
   if (!chatInput || !chatInput.style) throw new Error ('Chat Input not specified!');
 
   chatInput.style.height = 'auto';
   chatInput.style.height = Math.min(chatInput.scrollHeight, 120) + 'px';
+}
+
+export function renderChatInputValue(message) {
+  const chatInput = document.getElementById(elementIDs.chatInput);
+
+  if (!chatInput ) throw new Error ('Chat Input not found!');
+
+  chatInput.value = message;
+  renderScrollableChatInput(chatInput)
+
+  chatInput.focus(); 
 }
