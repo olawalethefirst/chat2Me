@@ -12,6 +12,7 @@ export const chatEvents = {
 }
 
 export const elementIDs = {
+    chatForm: 'chatForm',
     chats: 'chats',
     models: 'models',
     chatInput: 'chatInput',
