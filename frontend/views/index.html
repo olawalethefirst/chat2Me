@@ -41,7 +41,7 @@
           <div class="chat-area">
             <div class="chats" id="chats"></div>
 
-            <div class="initaiate-chat">
+            <form id="chatForm" class="initaiate-chat">
               <textarea
                 id="chatInput"
                 class="chat-input"
@@ -49,18 +49,18 @@
               ></textarea>
 
               <div class="chat-actions">
-                <button class="chat-action" id="toggleRecord">
+                <button type="button" class="chat-action" id="toggleRecord">
                    <div id="stopRecord" class="outer-circle hide">
                       <div class="inner-circle"></div>
                   </div>
                   <image id="record" src="/images/svgs/record.svg"> </image>
                 </button>
 
-                <button class="chat-action" id="sendMessage">
+                <button type="submit" class="chat-action" id="sendMessage">
                   <image src="/images/svgs/send-icons.svg"> </image>
                 </button>
               </div>
-            </div>
+            </form>
           </div>
         </section>
       </div>
