@@ -1,4 +1,5 @@
 import { elementIDs } from "../../../../constants.js";
+import Prism from "./prism.js";
 
 export function renderMessages(messages) {
   const chatContainer = document.getElementById(elementIDs.chats);
@@ -12,16 +13,34 @@ export function renderMessages(messages) {
   messages.forEach(({ role, content }) => {
     const messageDiv = document.createElement("div");
     messageDiv.className = `chat ${role}-chat`;
-    messageDiv.textContent = content;
+
+    if (role === "user") {
+      messageDiv.textContent = content;
+    } else if (role === "system") {
+      const pre = document.createElement("pre");
+      const code = document.createElement("code");
+  
+      pre.className = `language-javascript`;
+      code.className = `language-javascript`;
+      code.textContent = content;
+      
+      // Todo: implement autodeting and highlighting of code 
+      // Auto-detect language using highlight.js
+      // const detected = hljs.highlightAuto(content);
+      // code.className = `language-${detected.language || "plaintext"}`;
+  
+      pre.appendChild(code);
+      messageDiv.appendChild(pre);
+      
+      // Highlight with Prism.js
+      Prism.highlightElement(code);
+    }
     fragment.appendChild(messageDiv);
   });
-
+  
   chatContainer.replaceChildren(fragment);
-  // scroll to bottom 
-  chatContainer.scrollTo({
-    top: chatContainer.scrollHeight,
-    behavior: 'smooth'
-  });
+
+  chatContainer.lastElementChild?.scrollIntoView({ behavior: "smooth" });
 }
 
 export function renderModels(models) {
