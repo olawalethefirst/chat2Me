@@ -153,6 +153,8 @@ body {
 
 .chat-input {
     width: 100%;
+    font-size: 20px;
+    line-height: 1.4;
     background-color: transparent;
     border:none;
     outline: none;
@@ -164,7 +166,7 @@ body {
 }
 @media screen and (max-width: 616px) {
     .chat-input {
-        font-size: 12.5px;
+        font-size: 16px;
     }
 }
 
