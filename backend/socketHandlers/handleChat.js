@@ -7,6 +7,7 @@ export async function handleChat(socket, { model = "llama-3.3-70b-versatile", me
       
       socket.emit(chatEvents.AI_MESSAGE, AIResponse);
     } catch (error){
+      console.error('An error occured:', error)
       socket.emit(chatEvents.CHAT_ERROR, errorMessages.CHAT_ERROR);
   }
 }

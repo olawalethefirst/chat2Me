@@ -4,7 +4,7 @@ import { errorMessages, chatEvents, elementIDs } from '../../../constants.js';
 import {  renderModels,  renderChatInputValue, renderRecorder, renderMessages } from "./utils/modifyUI.js";
 import { fetchModels } from "./utils/models.js";
 import { Recordhandler,  } from "./utils/voice-recognition.js";
-import { registerAIMessagesHandler, emitUserMessage, closeChatSocket, setupChatSocket } from "./utils/chat.js";
+import { registerAIMessagesHandler, emitUserMessage, closeChatSocket, setupChatSocket, registerAIErrorHandler } from "./utils/chat.js";
 import isEqual from "./utils/isEqual.js";
 
 class StateManager {
@@ -122,7 +122,7 @@ const initiateRecord = () => {
       }
     },
     onEnd: () => {
-      // toggle isRecording if recording fails 
+      // toggle isRecording if recording ends without user stopping  
       if (messagesManager.state.isRecording) {
         toggleIsRecording()
       }
@@ -172,12 +172,17 @@ const handleSystemMessage = (message) => {
   
   addMessage(newMessage);  
 }
+const handleSystemError = (message) => {
+  console.log({ message })
+  // todo: show toast message
+}
 
 // Event handlers
 document.addEventListener("DOMContentLoaded", () => {
   // setup chat socket 
   setupChatSocket();
   registerAIMessagesHandler(handleSystemMessage);
+  registerAIErrorHandler(handleSystemError);
 
   // setup model dropdown 
   setupModelOptions()

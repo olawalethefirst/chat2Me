@@ -39,3 +39,7 @@ export const emitUserMessage = ({modelID, messages}) => {
 export const registerAIMessagesHandler = (messageHandler) => {
   socket.on(chatEvents.AI_MESSAGE, messageHandler)
 }
+
+export const registerAIErrorHandler = (errorHandler) => {
+  socket.on(chatEvents.CHAT_ERROR, errorHandler)
+}
