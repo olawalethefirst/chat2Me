@@ -1,5 +1,9 @@
 import { elementIDs } from "../../../../constants.js";
-import Prism from "./prism.js";
+import splitMessage from "./splitMessage.js";
+
+const { marked,  hljs } = window;
+const { parse } = marked;
+
 
 export function renderMessages(messages) {
   const chatContainer = document.getElementById(elementIDs.chats);
@@ -17,29 +21,36 @@ export function renderMessages(messages) {
     if (role === "user") {
       messageDiv.textContent = content;
     } else if (role === "system") {
-      const pre = document.createElement("pre");
-      const code = document.createElement("code");
-  
-      pre.className = `language-javascript`;
-      code.className = `language-javascript`;
-      code.textContent = content;
+      const messageParts = splitMessage(content)
+      const messageFragments = document.createDocumentFragment()
+
       
-      // Todo: implement autodeting and highlighting of code 
-      // Auto-detect language using highlight.js
-      // const detected = hljs.highlightAuto(content);
-      // code.className = `language-${detected.language || "plaintext"}`;
-  
-      pre.appendChild(code);
-      messageDiv.appendChild(pre);
-      
-      // Highlight with Prism.js
-      Prism.highlightElement(code);
+      messageParts.forEach(({ message, type }) => {
+        if (type === "paragraph") {
+          const paragraph = document.createElement('p')
+          paragraph.innerHTML = parse(message)
+
+          messageFragments.appendChild(paragraph)
+        } else {
+          const pre = document.createElement("pre");
+          const code = document.createElement("code");
+          code.textContent = message
+
+          const detected = hljs.highlightAuto(message);
+          code.className = `language-${detected.language || "plaintext"}`
+
+          pre.appendChild(code);
+          messageFragments.appendChild(pre);
+        }
+      })
+
+      messageDiv.appendChild(messageFragments)
     }
     fragment.appendChild(messageDiv);
   });
   
   chatContainer.replaceChildren(fragment);
-
+  hljs.highlightAll()
   chatContainer.lastElementChild?.scrollIntoView({ behavior: "smooth" });
 }
 

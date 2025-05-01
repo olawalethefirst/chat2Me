@@ -128,15 +128,24 @@ body {
 .chat {
     border-radius: 1.5rem;
     padding: 16px;
+    font-size: 1.2rem;
 }
 .user-chat{
     max-width: 80%;
-    margin-left:auto;
     background: #242626;
+    margin-left:auto;
 }
 .system-chat{
-    margin-right:auto
+    margin-right:auto;
+    line-height: 1.6 !important;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
+.system-chat ol, ul {
+    margin: 0 20px;
+}
+
 
 .initaiate-chat {
     margin: auto 0 20px;

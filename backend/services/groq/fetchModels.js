@@ -4,9 +4,9 @@ import { errorMessages } from "../../../constants.js";
 export async function fetchModels() {
     try  {
         const models = await groq.models.list();
-        return models
+    return models
     } catch (error) {
         console.error("Error fetching groq models: ", error)
-        throw new Error(errorMessages.FETCHING_MODELS_FAILED);
+        throw error
     }
 }
