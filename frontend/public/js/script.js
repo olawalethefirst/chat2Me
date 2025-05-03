@@ -1,7 +1,7 @@
 // Todos:
 //1: Write tests for all parts of APP. Both the FE and BE
 import { errorMessages, chatEvents, elementIDs } from '../../../constants.js';
-import {  renderModels,  renderChatInputValue, renderRecorder, renderMessages } from "./utils/modifyUI.js";
+import {  renderModels,  renderChatInputValue, renderRecorder, renderMessages, toggleProcessingResponse } from "./utils/modifyUI.js";
 import { fetchModels } from "./utils/models.js";
 import { Recordhandler,  } from "./utils/voice-recognition.js";
 import { registerAIMessagesHandler, emitUserMessage, closeChatSocket, setupChatSocket, registerAIErrorHandler } from "./utils/chat.js";
@@ -57,30 +57,6 @@ const messagesManager = new StateManager({
   recordingSupported: false, // Note Limited availability for recording, show tool tip error for non supported browsers,
 })
 
-// side effects
-modelsManager.subscribe((newState, oldState) => {
-  const { models, error } = newState;
-  
-  if(!isEqual(oldState.models, models)) renderModels(models)
-  if (oldState.models.length === 0 && models.length > 0) {
-    modelsManager.state.currentModel = models[0].value;
-  }
-
-  if (error) {
-    // todo: show toast error loading models
-  }
-})
-messagesManager.subscribe((newState, oldState) => {
-  const { isRecording, messageInput, messages, error } = newState;
-
-  if(!isEqual(oldState.messages, messages)) renderMessages(messages);
-  if (oldState.isRecording !== isRecording)renderRecorder(isRecording);
-  if (oldState.messageInput !== messageInput) renderChatInputValue(messageInput);
-  if (error) {
-    // todo: show toast error loading models
-  }
-})
-
 // update state 
 const toggleIsRecording = () => {
   messagesManager.state.isRecording = !messagesManager.state.isRecording;
@@ -90,17 +66,58 @@ const updateMessageInput = (value) => {
 }
 const addMessage = (message) => {
   messagesManager.state.messages = [...messagesManager.state.messages, message]
+} 
+const resetMessages = () => {
+  messagesManager.state.messages = []
 }
+const toggleIsLoadingModels = (isLoading) => {
+  modelsManager.state.isLoading = isLoading
+}
+const toggleIsLoadingResponse = (isLoading) => {
+  messagesManager.state.isLoading = isLoading;
+}
+
+// side effects
+modelsManager.subscribe((newState, oldState) => {
+  const { models, error } = newState;
+  
+  if(!isEqual(oldState.models, models)) renderModels(models)
+  if (oldState.models.length === 0 && models.length > 0) {
+    modelsManager.state.currentModel = models[0].value;
+    resetMessages()
+  }
+
+  if (error) {
+    // todo: show toast error loading models
+  }
+})
+messagesManager.subscribe((newState, oldState) => {
+  const { isRecording, messageInput, messages, error, isLoading } = newState;
+
+  if(!isEqual(oldState.messages, messages)) renderMessages(messages);
+  if (oldState.isRecording !== isRecording)renderRecorder(isRecording);
+  if (oldState.messageInput !== messageInput) renderChatInputValue(messageInput);
+  if (oldState.isLoading !== isLoading) {
+    const processingElement = document.getElementById(elementIDs.processingResponse);
+    toggleProcessingResponse(processingElement, isLoading)
+  }
+  if (error) {
+    // todo: show toast error loading models
+  }
+})
+
+
 
 const {startListening, stopListening} = new Recordhandler()
 
 // models
 const updateSelectedModel = (value) => {
   modelsManager.state.currentModel = value
+  resetMessages()
 }
 const setupModelOptions = async () => {
   try {
-    modelsManager.state.isLoading = true
+    toggleIsLoadingModels(true)
 
     const models = await fetchModels();
 
@@ -108,7 +125,7 @@ const setupModelOptions = async () => {
   } catch (error) {
     modelsManager.state.error = error;
   } finally {
-    modelsManager.state.isLoading = false
+    toggleIsLoadingModels(false)
   }
 }
 
@@ -149,6 +166,8 @@ const handleToggleRecord = () => {
 const handleUserMessage = (event) => {
   event.preventDefault(); 
 
+  toggleIsLoadingResponse(true)
+
   const newMessage = {
     role: "user",
     content: messagesManager.state.messageInput
@@ -165,14 +184,16 @@ const handleUserMessage = (event) => {
     
 }
 const handleSystemMessage = (message) => {
+  toggleIsLoadingResponse(false);
+  
   const newMessage = {
     role: "system",
     content: message
   }
-  
   addMessage(newMessage);  
 }
 const handleSystemError = (message) => {
+  toggleIsLoadingResponse(false)
   console.log({ message })
   // todo: show toast message
 }
@@ -188,6 +209,11 @@ document.addEventListener("DOMContentLoaded", () => {
   setupModelOptions()
   document.getElementById(elementIDs.models).addEventListener('change', (e) => {
     updateSelectedModel(e.target.value)
+  });
+
+  // new chat button
+  document.getElementById(elementIDs.newChat).addEventListener('click', () => {
+    resetMessages()
   });
 
   // form
@@ -208,12 +234,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // handle record updates
   document.getElementById(elementIDs.toggleRecord).addEventListener('click', handleToggleRecord);
-  document.getElementById(elementIDs.sendMessage).addEventListener('click', () => { });
+  document.getElementById(elementIDs.sendMessage).addEventListener('click', handleUserMessage);
 });
 
 // Cleanup
 window.addEventListener('beforeunload', () => {
   closeChatSocket()
 });
-
-

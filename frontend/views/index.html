@@ -4,21 +4,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>chat2Me</title>
     <!-- External -->
+    <!-- socketIO -->
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.8.1/socket.io.js"
       integrity="sha512-8BHxHDLsOHx+flIrQ0DrZcea7MkHqRU5GbTHmbdzMRnAaoCIkZ97PqZcXJkKZckMMhqfoeaJE+DNUVuyoQsO3Q=="
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
       defer
-    ></script><!-- socketIO -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/15.0.7/marked.min.js" integrity="sha512-rPuOZPx/WHMHNx2RoALKwiCDiDrCo4ekUctyTYKzBo8NGA79NcTW2gfrbcCL2RYL7RdjX2v9zR0fKyI4U4kPew==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> <!-- marked -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js" integrity="sha512-EBLzUL8XLl+va/zAsmXwS7Z2B1F9HUHkZwyS/VKwh3S7T/U0nF4BaU29EP/ZSf6zgiIxYAnKLu6bJ8dqpmX5uw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> <!-- highlightJS -->
+    ></script>
+    <!-- marked -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/marked/15.0.7/marked.min.js"
+      integrity="sha512-rPuOZPx/WHMHNx2RoALKwiCDiDrCo4ekUctyTYKzBo8NGA79NcTW2gfrbcCL2RYL7RdjX2v9zR0fKyI4U4kPew=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <!-- highlightJS -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"
+      integrity="sha512-EBLzUL8XLl+va/zAsmXwS7Z2B1F9HUHkZwyS/VKwh3S7T/U0nF4BaU29EP/ZSf6zgiIxYAnKLu6bJ8dqpmX5uw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <!-- lottie animation -->
+    <script
+      src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.3.0/dist/dotlottie-wc.js"
+      type="module"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
 
     <!-- Internal -->
     <script type="module" src="../js/script.js" defer></script>
-    
+
     <!-- External -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlightjs-themes@1.0.0/androidstudio.min.css"> <!-- highlightJS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/highlightjs-themes@1.0.0/androidstudio.min.css"
+    />
+    <!-- highlightJS -->
     <!-- Internal -->
     <link rel="stylesheet" href="./index.css" />
   </head>
@@ -28,21 +52,31 @@
       <div class="layout">
         <!-- sidebar -->
         <section class="sidebar">
-          <button class="new-chat-button">New chat</button>
+          <button class="new-chat-button" id="newChat">New chat</button>
 
           <select
             name="models"
             id="models"
             class="select-models"
             aria-placeholder=""
-          >
-          </select>
+          ></select>
         </section>
 
         <!-- main content -->
         <section class="content">
           <div class="chat-area">
             <div class="chats" id="chats"></div>
+
+            <div id="processingResponse" style="visibility: hidden;" class="processing-messages">
+              <div class="circle-animator-container">
+                <dotlottie-wc
+                  src="https://lottie.host/6d03f985-ece4-4ece-bea0-fee2c6b3611e/DzKzGz6dv6.lottie"
+                  autoplay
+                  loop
+                  class="circle-animator"
+                ></dotlottie-wc>
+              </div>
+            </div>
 
             <form id="chatForm" class="initaiate-chat">
               <textarea
@@ -53,8 +87,8 @@
 
               <div class="chat-actions">
                 <button type="button" class="chat-action" id="toggleRecord">
-                   <div id="stopRecord" class="outer-circle hide">
-                      <div class="inner-circle"></div>
+                  <div id="stopRecord" class="outer-circle hide">
+                    <div class="inner-circle"></div>
                   </div>
                   <image id="record" src="/images/svgs/record.svg"> </image>
                 </button>

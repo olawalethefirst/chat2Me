@@ -19,5 +19,7 @@ export const elementIDs = {
     record: 'record',
     stopRecord: 'stopRecord',
     toggleRecord: "toggleRecord",
-    sendMessage: "sendMessage"
+    sendMessage: "sendMessage",
+    newChat: "newChat",
+    processingResponse: "processingResponse",
 }

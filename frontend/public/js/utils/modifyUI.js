@@ -5,6 +5,19 @@ const { marked,  hljs } = window;
 const { parse } = marked;
 
 
+export function toggleProcessingResponse(processingResponse, isLoading) {
+  console.log("should show or hide", isLoading)
+  if (!processingResponse || !processingResponse.style) throw new Error('processingResponse container not specified!');
+
+  if (processingResponse) {
+      if (isLoading) {
+        processingResponse.style.visibility = "visible"
+      } else {
+        processingResponse.style.visibility = "hidden"
+      }
+    }
+}
+
 export function renderMessages(messages) {
   const chatContainer = document.getElementById(elementIDs.chats);
   

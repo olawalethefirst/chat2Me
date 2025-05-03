@@ -119,6 +119,20 @@ body {
     gap: 20px;
 }
 
+.processing-messages {
+    position: relative;
+    min-height: 100px;
+}
+.circle-animator-container {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 0;
+}
+.circle-animator {
+    scale: 0.4;
+}
+
 .chats  {
     padding: 20px;
     display: flex;
@@ -213,4 +227,6 @@ body {
 .hide {
     display: none;
 }
-
+.invisible {
+    visibility: hidden;
+}
